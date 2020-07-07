@@ -17,6 +17,8 @@ import lombok.Setter;
 // oops real life entity in programatical world
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Book 
 {
 	//ctrl+shift+o
