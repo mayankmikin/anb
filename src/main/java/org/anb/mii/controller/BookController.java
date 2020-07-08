@@ -53,5 +53,29 @@ public class BookController {
 		return new ResponseEntity<Book> (bookToBeCreated, HttpStatus.ACCEPTED);
 	}
 	
+	@GetMapping("/read/{id}")
+	public ResponseEntity<?> readFromDb(@PathVariable("id") Long id)
+	{
+		// wrong
+		//return new ResponseEntity<Book> (bookRepo.findById(id).get(), HttpStatus.ACCEPTED);
+		// old way for null check
+//		if(bookRepo.findById(id).get() != null)
+//		{
+//			
+//		}
+		
+		// java 8 null check
+		if(bookRepo.findById(id).isPresent())
+		{
+			return new ResponseEntity<Book> (bookRepo.findById(id).get(), HttpStatus.OK);
+		}
+		else
+		{
+			return new ResponseEntity<String> ("book does not exists by id :"+id, HttpStatus.OK) ;
+		}
+		
+		
+	}
+	
 	
 }
