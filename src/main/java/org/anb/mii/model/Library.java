@@ -7,23 +7,20 @@ import javax.persistence.Id;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Setter
-@Getter
-public class Book {
-
+@AllArgsConstructor
+public class Library {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO )
 	private Long id;
-	private String name;
-	private String authorName;
+	private Long bookId;
+	private Long studentId;
+	
+	
+	
 
 }
