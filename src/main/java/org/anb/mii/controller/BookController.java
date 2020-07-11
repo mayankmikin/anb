@@ -129,3 +129,12 @@ public class BookController {
 	}
 	
 }
+
+
+//Layers 
+//
+//1. controller = request response or interaction with external entities
+//2. Service = business logic 
+//3. Repository = interacts with dab and creates java objects
+
+// 1 controller -> many services -> 1 service -> many repositories 
