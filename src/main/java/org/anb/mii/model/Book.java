@@ -4,12 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 // java class= table
 // java object = 1 row db
@@ -27,5 +27,8 @@ public class Book
 	 private Long id;
 	 private String name;
 	 private String authorName;
+	 @ManyToOne
+     @JoinColumn(name="library_id", nullable=false)
+     private Library library;
 	
 }

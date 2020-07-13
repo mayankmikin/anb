@@ -2,6 +2,8 @@ package org.anb.mii.controller;
 
 import org.anb.mii.model.Book;
 import org.anb.mii.repository.BookRepository;
+import org.anb.mii.repository.LibraryRepository;
+import org.anb.mii.requestmodels.BookRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,31 +31,38 @@ public class BookController {
 	@Autowired
 	private BookRepository bookRepo;
 	
-	@GetMapping("/get")
-	public Book get()
-	{
-		// created object and returned
-		return new Book(new Long(4),"da vinci code","dan brown");
-		//return new ResponseEntity<List<BLETag>> (bleTags, HttpStatus.OK);
-	}
+	@Autowired
+	private LibraryRepository libRepo;
+	
+//	@GetMapping("/get")
+//	public Book get()
+//	{
+//		// created object and returned
+//		return new Book(new Long(4),"da vinci code","dan brown");
+//		//return new ResponseEntity<List<BLETag>> (bleTags, HttpStatus.OK);
+//	}
 
 	//ResponseEntity
-	@GetMapping("/get/{id}")
-	public ResponseEntity<Book> getProdLevel(@PathVariable("id") Long id)
-	{
-		// created object and returned with HTTP status code
-		//return new Book(new Long(4),"da vinci code","dan brown");
-		Book b=new Book(new Long(4),"da vinci code","dan brown");
-		return new ResponseEntity<Book> (b, HttpStatus.ACCEPTED);
-	}
+//	@GetMapping("/get/{id}")
+//	public ResponseEntity<Book> getProdLevel(@PathVariable("id") Long id)
+//	{
+//		// created object and returned with HTTP status code
+//		//return new Book(new Long(4),"da vinci code","dan brown");
+//		Book b=new Book(new Long(4),"da vinci code","dan brown");
+//		return new ResponseEntity<Book> (b, HttpStatus.ACCEPTED);
+//	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Book> create(@RequestBody Book bookToBeCreated)
+	public ResponseEntity<Book> create(@RequestBody BookRequest bookToBeCreated)
 	{
 		log.info("request body :{}",bookToBeCreated);
-		bookToBeCreated=bookRepo.save(bookToBeCreated);
-		log.info("after saving  :{}",bookToBeCreated);
-		return new ResponseEntity<Book> (bookToBeCreated, HttpStatus.ACCEPTED);
+		Book b = new Book();
+		b.setAuthorName(bookToBeCreated.getAuthorName());
+		b.setName(bookToBeCreated.getName());
+		b.setLibrary(libRepo.findById(bookToBeCreated.getLibrary()).get());
+		b=bookRepo.save(b);
+		log.info("after saving  :{}",b);
+		return new ResponseEntity<Book> (b, HttpStatus.ACCEPTED);
 	}
 	
 	@GetMapping("/read/{id}")
