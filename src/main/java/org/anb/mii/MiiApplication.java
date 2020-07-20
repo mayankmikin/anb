@@ -1,5 +1,6 @@
 package org.anb.mii;
 
+import org.anb.mii.model.Book;
 import org.anb.mii.model.Library;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,7 +21,7 @@ public class MiiApplication {
 	  @Override
 	  public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
 	    config.exposeIdsFor(Library.class);
-	    
+	    config.exposeIdsFor(Book.class);
 	  }
 	}
 

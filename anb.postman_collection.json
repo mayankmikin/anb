@@ -1,0 +1,105 @@
+{
+	"info": {
+		"_postman_id": "a0246c00-195d-4e10-b6fb-3f6f4088d470",
+		"name": "anb",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:9000/library",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"janak puri library\",\n \"address\":{\n   \"street\":\"janakpuri c4e\",\n   \"city\":\"new delhi\",\n   \"pincode\":110045\n }\n \n \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/library",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"library"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9000/book",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{\n    \"name\":\"The Lost Symbol\",\n    \"authorName\":\"Dan Brown\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/book",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"book"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9000/library/1/books",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/uri-list",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "http://localhost:9000/book/4",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/library/1/books",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"library",
+						"1",
+						"books"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

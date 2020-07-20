@@ -1,6 +1,6 @@
 package org.anb.mii.model;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -8,7 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
@@ -36,7 +37,16 @@ public class Library {
     
     // one to many
     // library may exists when a new book is added
-    @OneToMany(mappedBy="library")
-    private Set<Book> books;
+    //@OneToMany(mappedBy="library")
+    //private Set<Book> books;
     
+	@ManyToMany
+    @JoinTable( 
+        name = "library_books", 
+        joinColumns = @JoinColumn(
+          name = "library_id", referencedColumnName = "id"), 
+        inverseJoinColumns = @JoinColumn(
+          name = "book_id", referencedColumnName = "id")) 
+	private List<Book> books;
+	
 }

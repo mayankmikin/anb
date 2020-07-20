@@ -1,11 +1,12 @@
 package org.anb.mii.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,8 +28,11 @@ public class Book
 	 private Long id;
 	 private String name;
 	 private String authorName;
-	 @ManyToOne
-     @JoinColumn(name="library_id", nullable=false)
-     private Library library;
+	 
+//	 @ManyToOne
+//     @JoinColumn(name="library_id", nullable=false)
+//     private Library library;
 	
+	 @ManyToMany(mappedBy = "books")
+	 private List<Library> library;
 }

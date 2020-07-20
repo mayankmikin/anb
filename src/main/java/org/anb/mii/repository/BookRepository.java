@@ -9,4 +9,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @RepositoryRestResource(collectionResourceRel = "book", path = "book")
 public interface BookRepository extends CrudRepository<Book, Long> {
 
+	//List<Book> findAllById(List<Long> ids);
+	
 }

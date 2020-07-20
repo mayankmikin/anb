@@ -14,4 +14,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 public interface LibraryRepository extends CrudRepository<Library, Long> {
 
 	List<Library> findByName(String name);
+	List<Library> findByAddress_pincode(Integer pincode);
+	//List<Library> findAllById(List<Long> ids);
 }

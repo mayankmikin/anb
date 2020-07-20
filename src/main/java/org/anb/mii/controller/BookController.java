@@ -1,9 +1,14 @@
 package org.anb.mii.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.anb.mii.model.Book;
+import org.anb.mii.model.Library;
 import org.anb.mii.repository.BookRepository;
 import org.anb.mii.repository.LibraryRepository;
-import org.anb.mii.requestmodels.BookRequest;
+import org.anb.mii.requestmodels.BooksToLIBMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,16 +29,16 @@ import lombok.extern.slf4j.Slf4j;
 //1 method= 1 api operation
 @RestController
 @RequestMapping("/api/book")
-@Slf4j	
+@Slf4j
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class BookController {
-	
+
 	@Autowired
 	private BookRepository bookRepo;
-	
+
 	@Autowired
 	private LibraryRepository libRepo;
-	
+
 //	@GetMapping("/get")
 //	public Book get()
 //	{
@@ -42,7 +47,7 @@ public class BookController {
 //		//return new ResponseEntity<List<BLETag>> (bleTags, HttpStatus.OK);
 //	}
 
-	//ResponseEntity
+	// ResponseEntity
 //	@GetMapping("/get/{id}")
 //	public ResponseEntity<Book> getProdLevel(@PathVariable("id") Long id)
 //	{
@@ -51,94 +56,115 @@ public class BookController {
 //		Book b=new Book(new Long(4),"da vinci code","dan brown");
 //		return new ResponseEntity<Book> (b, HttpStatus.ACCEPTED);
 //	}
-	
-	@PostMapping("/create")
-	public ResponseEntity<Book> create(@RequestBody BookRequest bookToBeCreated)
-	{
-		log.info("request body :{}",bookToBeCreated);
-		Book b = new Book();
-		b.setAuthorName(bookToBeCreated.getAuthorName());
-		b.setName(bookToBeCreated.getName());
-		b.setLibrary(libRepo.findById(bookToBeCreated.getLibrary()).get());
-		b=bookRepo.save(b);
-		log.info("after saving  :{}",b);
-		return new ResponseEntity<Book> (b, HttpStatus.ACCEPTED);
-	}
-	
+
+	/*
+	 * @PostMapping("/create") public ResponseEntity<Book> create(@RequestBody
+	 * BookRequest bookToBeCreated) { log.info("request body :{}",bookToBeCreated);
+	 * Book b = new Book(); b.setAuthorName(bookToBeCreated.getAuthorName());
+	 * b.setName(bookToBeCreated.getName());
+	 * b.setLibrary(libRepo.findById(bookToBeCreated.getLibrary()).get());
+	 * b=bookRepo.save(b); log.info("after saving  :{}",b); return new
+	 * ResponseEntity<Book> (b, HttpStatus.ACCEPTED);
+	 * 
+	 * }
+	 */
+
+	// for many to many mappings 
+//	@PostMapping("/create")
+//	public ResponseEntity<Book> create(@RequestBody List<BooksToLIBMapping> bookToBeCreated) {
+//		log.info("request body :{}", bookToBeCreated);
+//		List<Long> bookIds= new ArrayList<Long>();
+//		bookToBeCreated.forEach(req->{
+//			bookIds.add(req.getBookID());
+//		});
+//		
+//		List<Long> libIds= new ArrayList<Long>();
+//		bookToBeCreated.forEach(req->{
+//			bookIds.add(req.getLibID());
+//		});
+//		List<Book> booksTobeadded=bookRepo.findAllById(bookIds);
+//		List<Library> libsTobeupdated=libRepo.findAllById(bookIds);		
+//		
+//		bookToBeCreated.forEach(
+//				req->{
+//					Library lib =libsTobeupdated.stream()
+//					.filter(l-> l.getId()==req.getLibID())
+//					.findFirst()
+//					.get();
+//					
+//					Book book =booksTobeadded.stream()
+//							.filter(l-> l.getId()==req.getBookID())
+//							.findFirst()
+//							.get();
+//					lib.getBooks().add(book);
+//				
+//				});
+//		libRepo.saveAll(libsTobeupdated);
+//		
+//		//log.info("after saving  :{}", b);
+//		return new ResponseEntity<Book>(b, HttpStatus.ACCEPTED);
+//
+//	}
+
 	@GetMapping("/read/{id}")
-	public ResponseEntity<?> readFromDb(@PathVariable("id") Long id)
-	{
+	public ResponseEntity<?> readFromDb(@PathVariable("id") Long id) {
 		// wrong
-		//return new ResponseEntity<Book> (bookRepo.findById(id).get(), HttpStatus.ACCEPTED);
+		// return new ResponseEntity<Book> (bookRepo.findById(id).get(),
+		// HttpStatus.ACCEPTED);
 		// old way for null check
 //		if(bookRepo.findById(id).get() != null)
 //		{
 //			
 //		}
-		
+
 		// java 8 null check
-		if(bookRepo.findById(id).isPresent())
-		{
-			return new ResponseEntity<Book> (bookRepo.findById(id).get(), HttpStatus.OK);
+		if (bookRepo.findById(id).isPresent()) {
+			return new ResponseEntity<Book>(bookRepo.findById(id).get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>("book does not exists by id :" + id, HttpStatus.OK);
 		}
-		else
-		{
-			return new ResponseEntity<String> ("book does not exists by id :"+id, HttpStatus.OK) ;
-		}
-		
-		
+
 	}
-	
+
 	@PatchMapping("/update/bookname/{id}")
-	public ResponseEntity<?> create(@PathVariable("id") Long id,@RequestBody String booknametobeupdated)
-	{
-		log.info("request body :{}",booknametobeupdated);
+	public ResponseEntity<?> create(@PathVariable("id") Long id, @RequestBody String booknametobeupdated) {
+		log.info("request body :{}", booknametobeupdated);
 		// java 8 null check
-				if(bookRepo.findById(id).isPresent())
-				{
-					Book bookTobeUpdated=bookRepo.findById(id).get();
-					bookTobeUpdated.setName(booknametobeupdated);
-					bookRepo.save(bookTobeUpdated);
-					return new ResponseEntity<Book> (bookTobeUpdated, HttpStatus.OK);
-				}
-				else
-				{
-					return new ResponseEntity<String> ("book does not exists by id :"+id, HttpStatus.OK) ;
-				}
-		
+		if (bookRepo.findById(id).isPresent()) {
+			Book bookTobeUpdated = bookRepo.findById(id).get();
+			bookTobeUpdated.setName(booknametobeupdated);
+			bookRepo.save(bookTobeUpdated);
+			return new ResponseEntity<Book>(bookTobeUpdated, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>("book does not exists by id :" + id, HttpStatus.OK);
+		}
+
 	}
-	
+
 	@PutMapping("/update/{id}")
-	public ResponseEntity<Book> update(@PathVariable("id") Long id,@RequestBody Book request)
-	{
-		log.info("request body :{}",request);
-		Book bookFromDb=bookRepo.findById(id).get();
+	public ResponseEntity<Book> update(@PathVariable("id") Long id, @RequestBody Book request) {
+		log.info("request body :{}", request);
+		Book bookFromDb = bookRepo.findById(id).get();
 		bookFromDb.setAuthorName(request.getAuthorName());
 		bookFromDb.setName(request.getName());
-		bookFromDb=bookRepo.save(bookFromDb);
-		log.info("after saving  :{}",bookFromDb);
-		return new ResponseEntity<Book> (bookFromDb, HttpStatus.ACCEPTED);
+		bookFromDb = bookRepo.save(bookFromDb);
+		log.info("after saving  :{}", bookFromDb);
+		return new ResponseEntity<Book>(bookFromDb, HttpStatus.ACCEPTED);
 	}
-	
+
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteFromDb(@PathVariable("id") Long id)
-	{
+	public ResponseEntity<?> deleteFromDb(@PathVariable("id") Long id) {
 
-		if(bookRepo.findById(id).isPresent())
-		{
+		if (bookRepo.findById(id).isPresent()) {
 			bookRepo.deleteById(id);
-			return new ResponseEntity<String> ("deleted "+id, HttpStatus.OK);
+			return new ResponseEntity<String>("deleted " + id, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>("book does not exists by id :" + id, HttpStatus.OK);
 		}
-		else
-		{
-			return new ResponseEntity<String> ("book does not exists by id :"+id, HttpStatus.OK) ;
-		}
-		
-		
-	}
-	
-}
 
+	}
+
+}
 
 //Layers 
 //
