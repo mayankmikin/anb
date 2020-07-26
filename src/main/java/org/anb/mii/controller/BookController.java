@@ -8,7 +8,6 @@ import org.anb.mii.model.Book;
 import org.anb.mii.model.Library;
 import org.anb.mii.repository.BookRepository;
 import org.anb.mii.repository.LibraryRepository;
-import org.anb.mii.requestmodels.BooksToLIBMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
