@@ -1,10 +1,13 @@
 package org.anb.mii.model;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
@@ -22,13 +25,15 @@ import lombok.NoArgsConstructor;
 public class Book 
 {
 	//ctrl+shift+o
+	
 	 @Id
-	 @GeneratedValue(strategy = GenerationType.AUTO)
+	 @GeneratedValue(strategy = GenerationType.AUTO)// not for production
 	 private Long id;
 	 private String name;
 	 private String authorName;
 	 @ManyToOne
      @JoinColumn(name="library_id", nullable=false)
      private Library library;
-	
+	 @ManyToMany(mappedBy = "likedBooks")
+	 Set<Student> likes;
 }
