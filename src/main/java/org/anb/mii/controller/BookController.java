@@ -1,11 +1,6 @@
 package org.anb.mii.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.anb.mii.model.Book;
-import org.anb.mii.model.Library;
 import org.anb.mii.repository.BookRepository;
 import org.anb.mii.repository.LibraryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +11,15 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
 // 1 class = 1 controller = 1 api
@@ -30,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/book")
 @Slf4j
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@Api(value="book api", description="Operations pertaining to fetch Fuel Data")
 public class BookController {
 
 	@Autowired
@@ -105,6 +104,14 @@ public class BookController {
 //
 //	}
 
+	@ApiOperation(value = "fetch fuel,nox,co2 consumption per engine based on imo startReportDate and EndReportDate ordered By VesselEngine", response = String.class)
+
+	@ApiResponses(value = {
+	        @ApiResponse(code = 200, message = "Successfully retrieved list"),
+	        @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	        @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden or Your token is expired"),
+	        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	})
 	@GetMapping("/read/{id}")
 	public ResponseEntity<?> readFromDb(@PathVariable("id") Long id) {
 		// wrong
